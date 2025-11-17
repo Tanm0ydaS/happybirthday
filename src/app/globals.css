@@ -1,26 +1,70 @@
+/* src/app/globals.css */
+
+/* Tailwind v4 import */
 @import "tailwindcss";
 
+/* Theme and base styles */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-1: #fff8fb;
+  --soft-pink: #fff0f6;
+  --accent: #ff3d8a;
+  --card-pink: #ffdbe9;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(180deg, var(--bg-1) 0%, #fffefc 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #2b2626;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Utilities used in components */
+.font-display { font-family: "Playfair Display", serif; }
+.perspective-800 { perspective: 800px; }
+.transform-gpu { transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+.rounded-2xl { border-radius: 1rem; }
+.blur-sm { filter: blur(6px); }
+.will-change-transform { will-change: transform, opacity; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+
+/* Photo strip */
+.photo-strip { -webkit-overflow-scrolling: touch; }
+.photo-strip::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Focus visible */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid rgba(255, 182, 193, 0.9);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+/* recommended modal backdrop (place in globals.css) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30; /* behind card (card uses z 70/80) */
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+
+
+/* Helpers for small screens */
+@media (max-width: 640px) {
+  .hero-title { font-size: 28px; }
+  .shadow-2xl { box-shadow: 0 10px 24px rgba(0,0,0,0.08); }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
