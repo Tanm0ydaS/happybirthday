@@ -122,9 +122,10 @@ export default function HeroCard({ herName = "Friend", birthdate = "Today" }: He
 
     // focus inner content after animation
     tl.call(() => {
-      const f = inner.querySelector<HTMLElement>("button, a, [tabindex]:not([tabindex='-1'])");
-      if (f) f.focus();
-    }, null, "+=0.06");
+  const f = inner.querySelector<HTMLElement>("button, a, [tabindex]:not([tabindex='-1'])");
+  if (f) f.focus();
+}, undefined, "+=0.06");
+
   };
 
   // gentle parallax on desktop mouse move
