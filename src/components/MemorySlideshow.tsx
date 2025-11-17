@@ -6,7 +6,12 @@ import gsap from "gsap";
 import Image from "next/image";
 
 type Slide = { src: string; alt?: string; caption?: string };
-type Props = { items: Slide[]; intervalMs?: number; autoplay?: boolean; showControls?: boolean };
+type Props = {
+  items: Slide[];
+  intervalMs?: number;
+  autoplay?: boolean;
+  showControls?: boolean;
+};
 
 export default function MemorySlideshow({
   items,
@@ -21,7 +26,9 @@ export default function MemorySlideshow({
   const intervalRef = useRef<number | null>(null);
 
   const prefersReducedMotion =
-    typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // reset references each render
   slidesRef.current = [];
@@ -60,8 +67,17 @@ export default function MemorySlideshow({
 
     const tl = gsap.timeline();
     tl.set(next, { autoAlpha: 1, zIndex: 20 })
-      .to(prev, { autoAlpha: 0, zIndex: 10, duration: 0.6, ease: "power2.out" }, 0)
-      .fromTo(next, { scale: 1.03 }, { scale: 1, duration: 0.9, ease: "power3.out" }, 0);
+      .to(
+        prev,
+        { autoAlpha: 0, zIndex: 10, duration: 0.6, ease: "power2.out" },
+        0
+      )
+      .fromTo(
+        next,
+        { scale: 1.03 },
+        { scale: 1, duration: 0.9, ease: "power3.out" },
+        0
+      );
 
     setIndex(i);
     startTyping(items[i].caption || "");
@@ -105,23 +121,25 @@ export default function MemorySlideshow({
   const sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 900px";
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className='w-full max-w-4xl mx-auto'>
       <div
-        className="relative rounded-xl overflow-hidden bg-gray-100"
+        className='relative rounded-xl overflow-hidden bg-gray-100'
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
-        aria-roledescription="carousel"
+        aria-roledescription='carousel'
       >
         {items.map((it, i) => (
           <div
             key={i}
-            ref={(el) => el && addRef(el)}
-            className="absolute inset-0 w-full h-[260px] sm:h-[340px] md:h-[420px] flex items-center justify-center"
+            ref={(el) => {
+              if (el) addRef(el);
+            }}
+            className='absolute inset-0 w-full h-[260px] sm:h-[340px] md:h-[420px] flex items-center justify-center'
             style={{ willChange: "transform, opacity" }}
             aria-hidden={i !== index}
           >
             {/* Next/Image in 'fill' mode for perfect cover behavior */}
-            <div className="relative w-full h-full">
+            <div className='relative w-full h-full'>
               <Image
                 src={it.src}
                 alt={it.alt ?? it.caption ?? `slide-${i + 1}`}
@@ -136,8 +154,8 @@ export default function MemorySlideshow({
         ))}
 
         {/* caption overlay */}
-        <div className="absolute left-4 right-4 bottom-4 bg-black/40 backdrop-blur-sm text-white p-3 rounded-lg pointer-events-none">
-          <div className="text-sm sm:text-base leading-snug">{typing}</div>
+        <div className='absolute left-4 right-4 bottom-4 bg-black/40 backdrop-blur-sm text-white p-3 rounded-lg pointer-events-none'>
+          <div className='text-sm sm:text-base leading-snug'>{typing}</div>
         </div>
 
         {/* controls */}
@@ -145,37 +163,59 @@ export default function MemorySlideshow({
           <>
             <button
               onClick={goPrev}
-              aria-label="Previous"
-              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-sm"
-              type="button"
+              aria-label='Previous'
+              className='absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-sm'
+              type='button'
             >
-              <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none">
-                <path d="M15 6L9 12l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                className='w-5 h-5 text-gray-700'
+                viewBox='0 0 24 24'
+                fill='none'
+              >
+                <path
+                  d='M15 6L9 12l6 6'
+                  stroke='currentColor'
+                  strokeWidth='2'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
               </svg>
             </button>
 
             <button
               onClick={goNext}
-              aria-label="Next"
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-sm"
-              type="button"
+              aria-label='Next'
+              className='absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-sm'
+              type='button'
             >
-              <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                className='w-5 h-5 text-gray-700'
+                viewBox='0 0 24 24'
+                fill='none'
+              >
+                <path
+                  d='M9 6l6 6-6 6'
+                  stroke='currentColor'
+                  strokeWidth='2'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
               </svg>
             </button>
           </>
         )}
 
         {/* indicators */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-2 pointer-events-auto">
+        <div className='absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-2 pointer-events-auto'>
           {items.map((_, i) => (
             <button
               key={i}
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => goTo(i)}
-              className={`w-2 h-2 rounded-full ${i === index ? "bg-white" : "bg-white/60"}`}
-              type="button"
+              className={`w-2 h-2 rounded-full ${
+                i === index ? "bg-white" : "bg-white/60"
+              }`}
+              type='button'
             />
           ))}
         </div>
